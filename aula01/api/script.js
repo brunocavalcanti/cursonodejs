@@ -1,4 +1,4 @@
-var frutas = ["banana","caqui","caju"]
+var frutas = ["banana","caqui","caju","morango"]
 
 for(i in frutas){
     console.log('FRUTA :', frutas[i])
