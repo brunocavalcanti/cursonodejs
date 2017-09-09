@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Aula 01</title>
+</head>
+<body>
+    <button id="botao"> Exibir Mensagem</button>
+    <input type="text" id="username"> 
+    <button id="botaogit"> obter github</button>
+     
+     
+     
+     
+     
+     <script>
+         document.getElementById('botao').addEventListener('click', exibir)
+         document.getElementById('botaogit').addEventListener('click', chamadaAjax)
+         function chamadaAjax(){
+             const user = document.getElementById('username').value;
+             var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function(){
+                    document.write('<pre>' + this.responseText + '</pre>' )
+                }
+                xhttp.open('GET','https://api.github.com/users/'+ user);
+                xhttp.send();
+
+         }
+           
+
+
+         function exibir(){
+             document.write("mensagem escrita <br>");
+             sleep(3000,function(){
+                 document.write("outra funcao 3seg - anonima <br>")
+             })             
+             sleep(100,function(){
+                 document.write("outra funcao 1seg - anonima <br>")
+             })
+             
+             //setTimeout(exibirOutraMensagem, 2000);
+             document.write("mensagem final <br>");   
+           
+            }
+            
+         function exibirOutraMensagem() {
+             document.write('outra msg aa')
+         }
+         function sleep(tempo,callback){
+           setTimeout(callback, tempo);
+         }
+    
+     </script>
+</body>
+</html>
