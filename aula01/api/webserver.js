@@ -43,23 +43,26 @@ http.createServer((req, res)=>{
             var ticket = JSON.parse(body);
             ticket.codigo = new Date().getTime();
             tickets.push(ticket); 
-            return res.end(JSON.stringify(ticket),3);   
-            
+             res.end(JSON.stringify(ticket),3);   
+             res.writeHead(201);   
+             return
         } )
     }
-    if (req.method ==="PUT" && req.url === "/tickets"){
+    if (req.method ==="PUT" && req.url.match("/tickets/")){
         var body = []
         return req.on('data', (data)=>{
             body.push(data)
         }).on('end', ()=>{
+            var parametro = req.url.replace("/tickets/","")
+            const ticket = tickets.filter(t => t.codigo === parseInt(parametro))[0]
+            const  indice = tickets.indexOf(ticket);
             body = Buffer.concat(body).toString();
-            var ticket = JSON.parse(body);
-            const indice = tickets.indexOf(ticket)
-            if(indice >=0){
-                tickets[indice] = ticket
-            } else {
-                tickets.push(ticket);
+            var ticketNovo = JSON.parse(body);
+            if(indice>=0){
+                tickets[indice] = ticketNovo
+                return res.end(JSON.stringify(ticketNovo));   
             }
+            tickets.push(ticketNovo)
             return res.end(JSON.stringify(ticket));
         })
 
