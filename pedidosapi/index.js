@@ -1,14 +1,12 @@
 require('./globals')
-
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express();
-
-//rotas
-const UsuariosRotas = require('./routes/usuarios')
-
 app.use(bodyParser.json())
 
-UsuariosRotas(app)
+//rotas
+require('./routes/usuarios')(app)
+require('./routes/produtos')(app)
+
 
 app.listen(PORTA);

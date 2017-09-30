@@ -1,7 +1,7 @@
 const mysql = require('mysql')
 global.PORTA = 8081
 
-global.MYSQL = mysql.createPool({
+const MYSQL = mysql.createPool({
     host: 'localhost',
     user: 'root',
     password: 'senha1',
@@ -47,9 +47,10 @@ global.SQL_FIND_ID = (query, id) => {
         })
     })
 }
-global.SQL_UPDATE = (query, parametros, camposRetorno) => {
+global.SQL_UPDATE = (query, objeto, camposRetorno) => {
+    const arrayValores = Object.keys(objeto).map(par => { return objeto[par] });
     return new Promise((resolve, reject) => {
-        MYSQL.query(query, parametros, (err, data) => {
+        MYSQL.query(query, arrayValores, (err, data) => {
             if (err) {
                 reject(TRATAR_ERROS(500, 'Erro no servidor!'))
             } else if (data.affectedRows === 0) {

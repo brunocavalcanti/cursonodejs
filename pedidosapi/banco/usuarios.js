@@ -1,5 +1,4 @@
-require('../globals')
-
+require('./globals')
 const crypto = require('crypto');
 const SECRET_KEY = '12I3021I0!@#$$123O-1O=jdufudsfndsfsd==1;;/901ao-/*ka';
 
@@ -11,7 +10,11 @@ obter = (id) => {
 }
 alterar = (id, usuario) => {
     usuario.senha = criptografarSenha(usuario.senha)
-    return SQL_UPDATE(`update usuarios set nome=?, email=?, senha=?, token=? where id=${id}`, [usuario.nome, usuario.email, usuario.senha, usuario.token], ['nome', 'email', 'id'])
+    if (usuario.id) {
+        return SQL_UPDATE(`update usuarios set nome=?, email=?, senha=?, token=? where id=${id}`, usuario, ['nome', 'email', 'id'])
+    } else {
+        return SQL_INSERT('insert into usuarios(id,nome,email,senha,token) values(0,?,?,?,?)', usuario, ['nome', 'email', 'id'])
+    }
 }
 apagar = (id) => {
     return SQL_DELETE('delete from usuarios where id=?', id)
