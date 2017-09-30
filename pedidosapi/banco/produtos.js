@@ -1,4 +1,4 @@
-require('./globals')
+
 listar = () => {
     return SQL_ALL('select id, nome, foto,preco from produtos', [])
 }

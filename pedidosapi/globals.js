@@ -1,17 +1,21 @@
 const mysql = require('mysql')
 global.PORTA = 8081
 
-const MYSQL = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: 'senha1',
-    database: 'apipedidos'
+global.MYSQL = mysql.createPool({
+    connectionLimit: 100,
+    host     : 'apipedidos.chlibe6ny0si.us-east-1.rds.amazonaws.com',
+    user     : 'admin',
+    password : 'admin123',
+    database : 'cafepedido'
 })
 
+
 global.SQL_ALL = (query, parametros) => {
+    console.log(query)
     return new Promise((resolve, reject) => {
         MYSQL.query(query, parametros, (err, data) => {
             if (err) {
+                console.log(err)
                 reject(TRATAR_ERROS(500, 'Erro no servidor!'))
             } else if (!data || data.length === 0) {
                 reject(TRATAR_ERROS(404, 'Registros não encontrados'))
@@ -21,15 +25,21 @@ global.SQL_ALL = (query, parametros) => {
         })
     })
 }
-global.SQL_INSERT = (query, objeto, camposRetorno) => {
-    const arrayValores = Object.keys(objeto).map(par => { return objeto[par] });
+global.SQL_INSERT = (query, valores, camposRetorno) => {
     return new Promise((resolve, reject) => {
-        MYSQL.query(query, arrayValores, (err, data) => {
+        MYSQL.query(query, valores, (err, data, fields) => {
             if (err) {
+                console.log(err)
                 reject(TRATAR_ERROS(500, 'Erro no servidor!'))
             } else {
-                objeto.id = data.insertId;
-                resolve(TRATAR_SUCESSO(201, MONTAR_OBJETO_RETORNO(objeto, camposRetorno)))
+                console.log(fields)
+                data.id = data.insertId
+                if (data.affectedRows > 1){
+                    console.log("correto")
+                    resolve(data)
+                }else {
+                    resolve(TRATAR_SUCESSO(201, MONTAR_OBJETO_RETORNO(data, camposRetorno)))
+                }
             }
         })
     })
@@ -47,10 +57,10 @@ global.SQL_FIND_ID = (query, id) => {
         })
     })
 }
-global.SQL_UPDATE = (query, objeto, camposRetorno) => {
+global.SQL_UPDATE = (query, valores, camposRetorno) => {
     const arrayValores = Object.keys(objeto).map(par => { return objeto[par] });
     return new Promise((resolve, reject) => {
-        MYSQL.query(query, arrayValores, (err, data) => {
+        MYSQL.query(query, valores, (err, data) => {
             if (err) {
                 reject(TRATAR_ERROS(500, 'Erro no servidor!'))
             } else if (data.affectedRows === 0) {
@@ -66,6 +76,7 @@ global.SQL_DELETE = (query, id) => {
     return new Promise((resolve, reject) => {
         MYSQL.query(query, [id], (err, data) => {
             if (err) {
+
                 reject(TRATAR_ERROS(500, 'Erro no servidor!'))
             } else if (data.affectedRows === 0) {
                 reject(TRATAR_ERROS(404, 'Registro não encontrado'))
@@ -76,16 +87,17 @@ global.SQL_DELETE = (query, id) => {
     })
 }
 const MONTAR_OBJETO_RETORNO = (objeto, campos) => {
+    console.log(objeto)
     var retorno = {}
     campos.forEach((valor) => {
         retorno[valor] = objeto[valor]
     }, this);
     return retorno
 }
-const TRATAR_ERROS = (statuscode, mensagem) => {
+global.TRATAR_ERROS = (statuscode, mensagem) => {
     const retorno = { mensagem: mensagem }
     return { status: statuscode, data: retorno }
 }
-const TRATAR_SUCESSO = (statuscode, data) => {
+global.TRATAR_SUCESSO = (statuscode, data) => {
     return { status: statuscode, data: data }
 }

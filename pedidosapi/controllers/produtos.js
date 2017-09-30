@@ -31,9 +31,11 @@ alterar = (req, res) => {
 
 inserir = (req, res) => {
     return ProdutosBanco.inserir(req.body).then(retorno => {
+        console.log("correto")
         res.status(retorno.status)
         res.json(retorno.data)
     }).catch(erro => {
+        console.log("erro")
         res.status(erro.status);
         res.json(erro.data)
     })

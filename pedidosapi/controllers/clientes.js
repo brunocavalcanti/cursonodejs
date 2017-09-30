@@ -1,7 +1,7 @@
-const PedidosBanco = require('../banco/pedidos')
+const ClientesBanco = require('../banco/clientes')
 
 listar = (req, res) => {
-    return PedidosBanco.listar().then(retorno => {
+    return ClientesBanco.listar().then(retorno => {
             res.status(retorno.status)
             res.json(retorno.data)
         })
@@ -11,7 +11,7 @@ listar = (req, res) => {
         })
 }
 obter = (req, res) => {
-    return PedidosBanco.obter(req.params.id).then(retorno => {
+    return ClientesBanco.obter(req.params.id).then(retorno => {
         res.status(retorno.status);
         res.json(retorno.data)
     }).catch(erro => {
@@ -20,7 +20,7 @@ obter = (req, res) => {
     })
 }
 alterar = (req, res) => {
-    return PedidosBanco.alterar(req.params.id, req.body).then(retorno => {
+    return ClientesBanco.alterar(req.params.id, req.body).then(retorno => {
         res.status(retorno.status);
         res.json(retorno.data)
     }).catch(erro => {
@@ -30,7 +30,7 @@ alterar = (req, res) => {
 }
 
 inserir = (req, res) => {
-    return PedidosBanco.inserir(req.body).then(retorno => {
+    return ClientesBanco.inserir(req.body).then(retorno => {
         res.status(retorno.status)
         res.json(retorno.data)
     }).catch(erro => {
@@ -39,7 +39,7 @@ inserir = (req, res) => {
     })
 }
 apagar = (req, res) => {
-    return PedidosBanco.apagar(req.params.id).then(retorno => {
+    return ClientesBanco.apagar(req.params.id).then(retorno => {
         res.status(retorno.status);
         res.json(retorno.data)
     }).catch(erro => {
