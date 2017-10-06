@@ -3,10 +3,10 @@ global.PORTA = 8081
 
 global.MYSQL = mysql.createPool({
     connectionLimit: 100,
-    host     : 'apipedidos.chlibe6ny0si.us-east-1.rds.amazonaws.com',
-    user     : 'admin',
-    password : 'admin123',
-    database : 'cafepedido'
+    host: 'apipedidos.chlibe6ny0si.us-east-1.rds.amazonaws.com',
+    user: 'admin',
+    password: 'admin123',
+    database: 'cafepedido'
 })
 
 
@@ -34,10 +34,10 @@ global.SQL_INSERT = (query, valores, camposRetorno) => {
             } else {
                 console.log(fields)
                 data.id = data.insertId
-                if (data.affectedRows > 1){
+                if (data.affectedRows > 1) {
                     console.log("correto")
                     resolve(data)
-                }else {
+                } else {
                     resolve(TRATAR_SUCESSO(201, MONTAR_OBJETO_RETORNO(data, camposRetorno)))
                 }
             }
