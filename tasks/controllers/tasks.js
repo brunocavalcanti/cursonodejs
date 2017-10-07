@@ -8,7 +8,6 @@ save = (req, res)=>{
     })
 
 
-
 }
 getID = (req, res)=>{
     Task.getID(req.params.id,(err,data)=>{
@@ -28,7 +27,7 @@ remove = (req, res) =>{
         if(err) return res.json({isValid:false, message:'Erro!'})
             console.log('opa', data.result)
         if(data.result.n === 0)return res.json({isValid:false, message:'Task não encontrada!'})
-            res.json({isValid:true, data:data})
+            res.json({isValid:true})
     })
 }
 
